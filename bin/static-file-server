@@ -1,0 +1,23 @@
+use v5.28;
+use Mojolicious::Lite;
+use Mojo::File;
+
+use feature qw(signatures);
+no warnings qw(experimental::signatures);
+
+use FindBin qw($Bin);
+use File::Spec::Functions qw(catfile);
+
+my $server_directory = Mojo::File->new( $Bin );
+my $html_directory = $server_directory->dirname->child( 'html' );
+say "HTML diretory is $html_directory";
+
+my $app = app;
+
+my $static = $app->static;
+push @{$static->paths}, $html_directory;
+
+get '/' => sub ( $self ) {
+	};
+
+$app->start;
